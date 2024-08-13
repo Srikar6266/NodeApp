@@ -2,7 +2,7 @@ name: CICD-Pipeline
 
 on:
   push:
-    branches: [main,master]
+    branches: [main, Test]
 
 jobs:
   build:
@@ -15,20 +15,20 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t react-app/NodeApp .
+        run: docker build -t react-app/nodeapp .
 
       - name: Publish to Docker Hub
-        run: docker push react-app/NodeApp:latest
+        run: docker push react-app/nodeapp:latest
 
   deploy:
     needs: build
     runs-on: aws-ec2
     steps:
       - name: Pull the Image from Docker Hub
-        run: docker pull react-app/NodeApp:latest
+        run: docker pull react-app/nodeapp:latest
 
       - name: Delete if any Container was running
         run: docker rm -f NodeApp-container
 
       - name: Run the Docker Container
-        run: docker run -d -p 5000:5000 --name NodeApp-container react-app/NodeApp
+        run: docker run -d -p 5000:5000 --name NodeApp-container react-app/nodeapp
