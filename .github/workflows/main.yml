@@ -23,7 +23,8 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [ubuntu-latest, aws-ec2]
+    runs-on: ubuntu-latest
+
 
     steps:
       - name: Pull the Image from Docker Hub
